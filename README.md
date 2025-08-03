@@ -39,6 +39,27 @@ Capitalization: Used CSS (capitalize) to format Pokémon names ( “pikachu” t
 
 ## State Management Approach
 
+useState: Used for managing the Pokémon list, pagination URLs (next and previous), and loading states in the PokemonList component.
+useEffect: Used to fetch the initial Pokémon list and update it when navigating pages.
+Next.js Router: Used for navigating to the details page (/pokemon/[id]) when a card is clicked, with the Pokémon’s ID stored in the URL.
+
+why?
+useState and useEffect are sufficient for a small-scale app with straightforward state (list, pagination, and selected Pokémon). The app doesn’t require complex state interactions or global state.
+Scalability Consideration: For a larger app, I might consider the Context API or a library like Zustand for global state (caching Pokémon details), but for this scope, useState is lightweight and effective.
+
 ## API Interaction Strategy
 
+Helper Functions: Two utility functions in lib/api.ts handle API interactions:
+    fetchPokemonList: Fetches a paginated list of Pokémon, returning results, next, and previous URLs. It defaults to fetching 12 Pokémon per page for performance.
+    fetchPokemonDetails: Fetches detailed data for a specific Pokémon using its URL.
+
+how?
+Both functions use the native fetch API for simplicity and compatibility with Next.js’s client-side rendering.
+Error handling ensures robustness: fetchPokemonList returns fallback values (empty list, null URLs), while fetchPokemonDetails rethrows errors for caller handling.
+Used in PokemonList (via useEffect) to fetch the list and in PokemonDetails to fetch individual Pokémon data.
+
 ## Challenges Encountered & Solutions
+
+Challenge: Learning about Next.js as id never used it before.
+Solution: Used Next.js’s Image component with fixed dimensions (width={96}, height={96}) to enable optimisation and prevent layout shifts.
+
